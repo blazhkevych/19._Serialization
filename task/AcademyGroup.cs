@@ -1,11 +1,9 @@
 ﻿using System.Text;
-using System.Xml.Serialization;
 
 namespace task;
 
 // IEnumerable предоставляет перечислитель, который поддерживает простой перебор элементов необобщенной коллекции.
 [Serializable]
-//[XmlRoot("AcademyGroup")]
 public class AcademyGroup : ICloneable
 {
     // Ссылка на коллекцию студентов (ArrayList).
@@ -226,7 +224,7 @@ public class AcademyGroup : ICloneable
         var sw = new StreamWriter("Group of students.txt", false);
         foreach (var t in _Group)
         {
-            (var name, var surname, var age, var phone, var average, var numberOfGroup) = t;
+            var (name, surname, age, phone, average, numberOfGroup) = t;
 
             try
             {
