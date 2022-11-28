@@ -1,17 +1,8 @@
-﻿using System.Runtime.Serialization;
-using System.Xml.Serialization;
-
-namespace task;
+﻿namespace task;
 
 [Serializable]
 public class Person
 {
-    // Автоматические свойства _Name, Surname, Age, Phone.
-    public string Name { get; set; }         // Имя.
-    public string Surname { get; set; }      // Фамилия.
-    public int Age { get; set; }             // Возраст.
-    public string Phone { get; set; }        // Телефон.
-
     // Конструктор по умолчанию.
     protected Person()
     {
@@ -29,6 +20,12 @@ public class Person
         Age = age;
         Phone = phone;
     }
+
+    // Автоматические свойства _Name, Surname, Age, Phone.
+    public string Name { get; set; } // Имя.
+    public string Surname { get; set; } // Фамилия.
+    public int Age { get; set; } // Возраст.
+    public string Phone { get; set; } // Телефон.
 
     // Метод вывода информации на экран.
     public override string ToString()
@@ -49,6 +46,7 @@ public class Person
             Console.WriteLine(e);
             Name = "Не задано";
         }
+
         Console.Write("Фамилия: ");
         try
         {
@@ -59,6 +57,7 @@ public class Person
             Console.WriteLine(e);
             Surname = "Не задано";
         }
+
         Console.Write("Возраст: ");
         try
         {
@@ -69,6 +68,7 @@ public class Person
             Console.WriteLine(e);
             Age = 1;
         }
+
         Console.Write("Телефон: ");
         try
         {
@@ -84,7 +84,7 @@ public class Person
     // Метод генерации данных персоны.
     internal void Generate()
     {
-        Random rnd = new Random();
+        var rnd = new Random();
         Name = "Имя" + rnd.Next(1, 100);
         Surname = "Фамилия" + rnd.Next(1, 100);
         Age = rnd.Next(1, 100);

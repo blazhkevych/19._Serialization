@@ -1,13 +1,12 @@
 ﻿namespace task;
 
 // Класс MainClass, реализующий пользовательский интерфейс приложения, и демонстрирующий работу с классом AcademyGroup.
-// Класс MainClass, реализующий пользовательский интерфейс приложения, и демонстрирующий работу с классом AcademyGroup.
 internal class MainClass
 {
     // Главное меню.
     public void MainMenu(ref AcademyGroup ag)
     {
-        string choice = "";
+        var choice = "";
         do
         {
             Console.Clear();
@@ -36,7 +35,7 @@ internal class MainClass
             {
                 case "1": // 1. Добавление студентов в группу.
                     Console.WriteLine("Введите количество студентов для добавления:");
-                    int amountOfStudentsToAdd = -1;
+                    var amountOfStudentsToAdd = -1;
                     do
                     {
                         try
@@ -50,6 +49,7 @@ internal class MainClass
                             Console.WriteLine("Попробуйте еще раз !");
                         }
                     } while (amountOfStudentsToAdd < 0);
+
                     ag.Add(amountOfStudentsToAdd);
                     Console.WriteLine();
                     Console.WriteLine("Для продолжения нажмите любую клавишу.");
@@ -96,7 +96,9 @@ internal class MainClass
                     Environment.Exit(0);
                     break;
             }
+
             MainMenu(ref ag);
-        } while (choice != "1" | choice != "2" | choice != "3" | choice != "4" | choice != "5" | choice != "6" | choice != "7");
+        } while ((choice != "1") | (choice != "2") | (choice != "3") | (choice != "4") | (choice != "5") |
+                 (choice != "6") | (choice != "7"));
     }
 }

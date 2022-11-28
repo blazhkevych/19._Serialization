@@ -5,12 +5,10 @@
 [Serializable]
 public class Student : Person, IComparable<Student>
 {
-    // Автоматические свойства Average, NumberOfGroup.
-    public double Average { get; set; }            // Средний балл.
-    public string NumberOfGroup { get; set; }      // Номер группы.
-
     // Конструктор по умолчанию.
-    public Student() : this("Не задано", "Не задано", 0, "+380 - 00 - 000 - 00 - 00", 0.0, "Не задано") { }
+    public Student() : this("Не задано", "Не задано", 0, "+380 - 00 - 000 - 00 - 00", 0.0, "Не задано")
+    {
+    }
 
     // Конструктор с параметрами.
     public Student(string name, string surname, int age, string phone, double average, string numberOfGroup)
@@ -20,8 +18,19 @@ public class Student : Person, IComparable<Student>
         NumberOfGroup = numberOfGroup;
     }
 
+    // Автоматические свойства Average, NumberOfGroup.
+    public double Average { get; set; } // Средний балл.
+    public string NumberOfGroup { get; set; } // Номер группы.
+
+    // Метод вывода информации на экран.
+    public int CompareTo(Student? other)
+    {
+        return Surname.CompareTo(other.Surname);
+    }
+
     // Деконструкторы позволяют выполнить декомпозицию объекта на отдельные части.
-    public void Deconstruct(out string name, out string surname, out int age, out string phone, out double average, out string numberOfGroup)
+    public void Deconstruct(out string name, out string surname, out int age, out string phone, out double average,
+        out string numberOfGroup)
     {
         name = Name;
         surname = Surname;
@@ -29,12 +38,6 @@ public class Student : Person, IComparable<Student>
         phone = Phone;
         average = Average;
         numberOfGroup = NumberOfGroup;
-    }
-
-    // Метод вывода информации на экран.
-    public int CompareTo(Student? other)
-    {
-        return Surname.CompareTo(other.Surname);
     }
 
     public override string ToString()
@@ -56,6 +59,7 @@ public class Student : Person, IComparable<Student>
             Console.WriteLine(e);
             Average = 0.0;
         }
+
         Console.Write("Номер группы: ");
         try
         {

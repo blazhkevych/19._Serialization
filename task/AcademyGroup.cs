@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Text;
+﻿using System.Text;
 using System.Xml.Serialization;
 
 namespace task;
 
 // IEnumerable предоставляет перечислитель, который поддерживает простой перебор элементов необобщенной коллекции.
-[Serializable, XmlRoot("AcademyGroup")]
+[Serializable]
+//[XmlRoot("AcademyGroup")]
 public class AcademyGroup : ICloneable
 {
     // Ссылка на коллекцию студентов (ArrayList).
@@ -23,13 +23,18 @@ public class AcademyGroup : ICloneable
         _Group = group;
     }
 
+    public object Clone()
+    {
+        return new AcademyGroup(_Group);
+    }
+
     // Метод Add для добавления студентов в группу.
     public void Add(int amountOfStudentsToAdd)
     {
-        for (int i = 0; i < amountOfStudentsToAdd; i++)
+        for (var i = 0; i < amountOfStudentsToAdd; i++)
         {
             Console.WriteLine("Введите данные о студенте №{0}:", i + 1);
-            Student student = new Student();
+            var student = new Student();
             student.Input();
             _Group.Add(student);
         }
@@ -40,13 +45,15 @@ public class AcademyGroup : ICloneable
     {
         Console.Clear();
         if (_Group.Count == 0)
+        {
             Console.WriteLine("В группе нету студентов!");
+        }
         else
         {
             PrintGroup();
             Console.WriteLine();
             Console.WriteLine("Введите № студента для удаления:");
-            int studentNumberToRemove = -1;
+            var studentNumberToRemove = -1;
             try
             {
                 studentNumberToRemove = Convert.ToInt32(Console.ReadLine());
@@ -98,27 +105,27 @@ public class AcademyGroup : ICloneable
 
                 Console.WriteLine();
                 Console.Write("Имя: ");
-                (_Group[studentNumberToEdit] as Student).Name = Convert.ToString(Console.ReadLine()) ?? "null";
+                _Group[studentNumberToEdit].Name = Convert.ToString(Console.ReadLine()) ?? "null";
 
                 Console.WriteLine();
                 Console.Write("Фамилия: ");
-                (_Group[studentNumberToEdit] as Student).Surname = Convert.ToString(Console.ReadLine()) ?? "null";
+                _Group[studentNumberToEdit].Surname = Convert.ToString(Console.ReadLine()) ?? "null";
 
                 Console.WriteLine();
                 Console.Write("Возраст: ");
-                (_Group[studentNumberToEdit] as Student).Age = Convert.ToInt32(Console.ReadLine());
+                _Group[studentNumberToEdit].Age = Convert.ToInt32(Console.ReadLine());
 
                 Console.WriteLine();
                 Console.Write("Телефон: ");
-                (_Group[studentNumberToEdit] as Student).Phone = Convert.ToString(Console.ReadLine()) ?? "null";
+                _Group[studentNumberToEdit].Phone = Convert.ToString(Console.ReadLine()) ?? "null";
 
                 Console.WriteLine();
                 Console.Write("Средний балл: ");
-                (_Group[studentNumberToEdit] as Student).Average = Convert.ToDouble(Console.ReadLine());
+                _Group[studentNumberToEdit].Average = Convert.ToDouble(Console.ReadLine());
 
                 Console.WriteLine();
                 Console.Write("Номер группы: ");
-                (_Group[studentNumberToEdit] as Student).NumberOfGroup = Convert.ToString(Console.ReadLine()) ?? "null";
+                _Group[studentNumberToEdit].NumberOfGroup = Convert.ToString(Console.ReadLine()) ?? "null";
             }
             catch (Exception e)
             {
@@ -130,7 +137,8 @@ public class AcademyGroup : ICloneable
     // Печать хедера группы.
     private void PrintGroupHeader()
     {
-        Console.Write($"{" № ",6}{"Имя",19}{"Фамилия",20}{"Возраст",9}{"Телефон",20}{"Средний балл",14}{"Номер группы",14}");
+        Console.Write(
+            $"{" № ",6}{"Имя",19}{"Фамилия",20}{"Возраст",9}{"Телефон",20}{"Средний балл",14}{"Номер группы",14}");
         Console.WriteLine();
     }
 
@@ -170,7 +178,7 @@ public class AcademyGroup : ICloneable
             Console.WriteLine("4. Телефон");
             Console.WriteLine("5. Средний балл");
             Console.WriteLine("6. Группа");
-            int sortCriterion = -1;
+            var sortCriterion = -1;
             do
             {
                 try
@@ -215,10 +223,10 @@ public class AcademyGroup : ICloneable
     // Метод Save для сохранения данных в файл.
     public void Save()
     {
-        StreamWriter sw = new StreamWriter("Group of students.txt", false);
+        var sw = new StreamWriter("Group of students.txt", false);
         foreach (var t in _Group)
         {
-            (string name, string surname, int age, string phone, double average, string numberOfGroup) = t;
+            (var name, var surname, var age, var phone, var average, var numberOfGroup) = t;
 
             try
             {
@@ -234,6 +242,7 @@ public class AcademyGroup : ICloneable
                 Console.WriteLine(e);
             }
         }
+
         sw.Close();
     }
 
@@ -260,7 +269,7 @@ public class AcademyGroup : ICloneable
         {
             while ((name = sr.ReadLine()) != null)
             {
-                Student st = new Student(name, sr.ReadLine(), Convert.ToInt32(sr.ReadLine()),
+                var st = new Student(name, sr.ReadLine(), Convert.ToInt32(sr.ReadLine()),
                     sr.ReadLine(), Convert.ToDouble(sr.ReadLine()), sr.ReadLine());
                 _Group.Add(st);
             }
@@ -284,7 +293,7 @@ public class AcademyGroup : ICloneable
         else
         {
             Console.WriteLine("Введите строку для поиска:");
-            string searchStr = "";
+            var searchStr = "";
             try
             {
                 searchStr = Console.ReadLine();
@@ -293,11 +302,11 @@ public class AcademyGroup : ICloneable
             {
                 Console.WriteLine(e);
             }
+
             Console.WriteLine();
-            bool firstMatch = false;
-            int coincidence = 0; // Количество совпадений при поиске.
+            var firstMatch = false;
+            var coincidence = 0; // Количество совпадений при поиске.
             for (var index = 0; index < _Group.Count; index++)
-            {
                 if (_Group[index].ToString().Contains(searchStr))
                 {
                     if (!firstMatch)
@@ -307,7 +316,6 @@ public class AcademyGroup : ICloneable
                     Console.Write($"{index,5}" + _Group[index]);
                     Console.WriteLine();
                 }
-            }
 
             if (coincidence == 0)
             {
@@ -335,10 +343,5 @@ public class AcademyGroup : ICloneable
         }
 
         Console.WriteLine("Студенты успешно сгенерированы!");
-    }
-
-    public object Clone()
-    {
-        return new AcademyGroup(_Group);
     }
 }

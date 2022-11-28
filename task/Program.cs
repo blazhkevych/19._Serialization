@@ -15,13 +15,13 @@ internal class Program
     /// </summary>
     private static void Main(string[] args)
     {
-        List<Student> students = new List<Student>
+        var students = new List<Student>
         {
-            new Student("Иван", "Иванов", 20, "+380-00-000-00-00", 5.5, "0а"),
-            new Student("Петр", "Петров", 21, "+380-00-000-00-01", 4.5, "0а"),
-            new Student("Сидор", "Сидоров", 22, "+380-00-000-00-02", 4.4, "0а"),
-            new Student("Андрей", "Андреев", 23, "+380-00-000-00-03", 4.3, "0а"),
-            new Student("Алексей", "Алексеев", 24, "+380-00-000-00-04", 4.2, "0а")
+            new("Иван", "Иванов", 20, "+380-00-000-00-00", 5.5, "0а"),
+            new("Петр", "Петров", 21, "+380-00-000-00-01", 4.5, "0а"),
+            new("Сидор", "Сидоров", 22, "+380-00-000-00-02", 4.4, "0а"),
+            new("Андрей", "Андреев", 23, "+380-00-000-00-03", 4.3, "0а"),
+            new("Алексей", "Алексеев", 24, "+380-00-000-00-04", 4.2, "0а")
         };
 
         Console.WriteLine("Исходный список студентов группы:");
@@ -46,23 +46,22 @@ internal class Program
                 Console.WriteLine("9. Выход");
                 Console.Write("Выберите пункт меню: ");
 
-                int choice = Convert.ToInt32(Console.ReadLine());
+                var choice = Convert.ToInt32(Console.ReadLine());
 
-                FileStream fs = null;
-                //List<Student> l = new List<Student>();
+                FileStream fs;
 
                 switch (choice)
                 {
                     case 1: // 1.Сериализация массива объектов (BinaryFormatter).
                         BinaryFormatter binaryFormatter = new();
-                        fs = new("studentsBinary.dat", FileMode.OpenOrCreate);
+                        fs = new FileStream("studentsBinary.dat", FileMode.OpenOrCreate);
                         binaryFormatter.Serialize(fs, students);
                         fs.Close();
                         Console.WriteLine("Сериализация прошла успешно");
                         break;
                     case 2: // 2. Десериализация массива объектов (BinaryFormatter).
-                        binaryFormatter = new();
-                        fs = new("studentsBinary.dat", FileMode.OpenOrCreate);
+                        binaryFormatter = new BinaryFormatter();
+                        fs = new FileStream("studentsBinary.dat", FileMode.OpenOrCreate);
                         students = (List<Student>)binaryFormatter.Deserialize(fs);
                         fs.Close();
                         foreach (var student in students)
@@ -71,14 +70,14 @@ internal class Program
                         break;
                     case 3: // 3. Сериализация массива объектов (SoapFormatter).
                         SoapFormatter soapFormatter = new();
-                        fs = new("studentsSoap.dat", FileMode.OpenOrCreate);
+                        fs = new FileStream("studentsSoap.dat", FileMode.OpenOrCreate);
                         soapFormatter.Serialize(fs, students);
                         fs.Close();
                         Console.WriteLine("Сериализация прошла успешно");
                         break;
                     case 4: // 4. Десериализация массива объектов (SoapFormatter).
-                        soapFormatter = new();
-                        fs = new("studentsSoap.dat", FileMode.OpenOrCreate);
+                        soapFormatter = new SoapFormatter();
+                        fs = new FileStream("studentsSoap.dat", FileMode.OpenOrCreate);
                         students = (List<Student>)soapFormatter.Deserialize(fs);
                         fs.Close();
                         foreach (var student in students)
@@ -87,14 +86,14 @@ internal class Program
                         break;
                     case 5: // 5. Сериализация массива объектов (XmlSerializer).
                         XmlSerializer xmlSerializer = new(typeof(List<Student>));
-                        fs = new("studentsXml.xml", FileMode.OpenOrCreate);
+                        fs = new FileStream("studentsXml.xml", FileMode.OpenOrCreate);
                         xmlSerializer.Serialize(fs, students);
                         fs.Close();
                         Console.WriteLine("Сериализация прошла успешно");
                         break;
                     case 6: // 6. Десериализация массива объектов (XmlSerializer).
-                        xmlSerializer = new(typeof(List<Student>));
-                        fs = new("studentsXml.xml", FileMode.OpenOrCreate);
+                        xmlSerializer = new XmlSerializer(typeof(List<Student>));
+                        fs = new FileStream("studentsXml.xml", FileMode.OpenOrCreate);
                         students = (List<Student>)xmlSerializer.Deserialize(fs);
                         fs.Close();
                         foreach (var student in students)
@@ -103,14 +102,14 @@ internal class Program
                         break;
                     case 7: // 7. Сериализация массива объектов (DataContractJsonSerializer).
                         DataContractJsonSerializer jsonSerializer = new(typeof(List<Student>));
-                        fs = new("studentsJson.json", FileMode.OpenOrCreate);
+                        fs = new FileStream("studentsJson.json", FileMode.OpenOrCreate);
                         jsonSerializer.WriteObject(fs, students);
                         fs.Close();
                         Console.WriteLine("Сериализация прошла успешно");
                         break;
                     case 8: // 8. Десериализация массива объектов (DataContractJsonSerializer).
-                        jsonSerializer = new(typeof(List<Student>));
-                        fs = new("studentsJson.json", FileMode.OpenOrCreate);
+                        jsonSerializer = new DataContractJsonSerializer(typeof(List<Student>));
+                        fs = new FileStream("studentsJson.json", FileMode.OpenOrCreate);
                         students = (List<Student>)jsonSerializer.ReadObject(fs);
                         fs.Close();
                         foreach (var student in students)
